@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import "./globals.css";
 import { UtmCapture } from "@/components/utm-capture";
 import { MotionProvider } from "@/components/motion-provider";
@@ -51,6 +52,7 @@ export default function RootLayout({
         <UtmCapture />
         <MotionProvider>{children}</MotionProvider>
       </body>
+      <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID ?? "G-S23KJRRXRJ"} />
     </html>
   );
 }
