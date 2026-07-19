@@ -52,7 +52,7 @@ export default function RootLayout({
         <UtmCapture />
         <MotionProvider>{children}</MotionProvider>
       </body>
-      <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID ?? "G-S23KJRRXRJ"} />
+      <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID ?? "G-1ZHX6S40C6"} />
     </html>
   );
 }
