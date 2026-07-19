@@ -1,0 +1,65 @@
+@import "tailwindcss";
+
+:root {
+  --da-bg: #070909;
+  --da-bg-elevated: #0b0e0c;
+  --da-panel: #101411;
+  --da-panel-border: rgba(255, 255, 255, 0.08);
+  --da-green: #b6ff18;
+  --da-green-dim: rgba(182, 255, 24, 0.14);
+  --da-white: #f4f6f4;
+  --da-gray: #9aa19b;
+  --da-gray-dim: #5c635e;
+}
+
+@theme inline {
+  --color-da-bg: var(--da-bg);
+  --color-da-bg-elevated: var(--da-bg-elevated);
+  --color-da-panel: var(--da-panel);
+  --color-da-panel-border: var(--da-panel-border);
+  --color-da-green: var(--da-green);
+  --color-da-green-dim: var(--da-green-dim);
+  --color-da-white: var(--da-white);
+  --color-da-gray: var(--da-gray);
+  --color-da-gray-dim: var(--da-gray-dim);
+  --font-sans: var(--font-inter);
+}
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  background: var(--da-bg);
+  color: var(--da-white);
+  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+
+* {
+  border-color: var(--da-panel-border);
+}
+
+::selection {
+  background: var(--da-green);
+  color: #04120a;
+}
+
+:focus-visible {
+  outline: 2px solid var(--da-green);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.text-balance {
+  text-wrap: balance;
+}
