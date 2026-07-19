@@ -20,17 +20,17 @@ Copia `.env.example` como `.env.local` y ajusta:
 | `NEXT_PUBLIC_FREE_CASES_OPEN` | `true` muestra la convocatoria de 3 casos gratis; `false` la reemplaza por la oferta de revisión personalizada. No requiere rediseño, solo redeploy. |
 | `AI_PROVIDER` | `openai`, `anthropic`, `gemini` o `groq`. Vacío = solo motor local. |
 | `*_API_KEY` | La clave del proveedor elegido. Solo vive en el servidor, nunca llega al navegador. |
-| `AIRTABLE_API_KEY/BASE_ID/TABLE_NAME` | Si están configuradas, los leads se guardan en Airtable. Si no, en `data/leads.json`. |
+| `SUPABASE_URL` + `SUPABASE_KEY` | Destino principal de leads (tabla `leads`). Recomendado en producción. |
+| `AIRTABLE_API_KEY/BASE_ID/TABLE_NAME` | Alternativa a Supabase. Sin ninguno, los leads van a `data/leads.json` (solo local). |
 | `NEXT_PUBLIC_SITE_URL` | URL pública para SEO y Open Graph. |
 
 ## Base de leads
 
 Cada lead se registra **antes** de mostrar el resultado, con: fecha, UTMs, respuestas, puntuación, fuga principal, fugas secundarias, oferta recomendada y estado `Nuevo diagnóstico`.
 
-- **Por defecto:** archivo `data/leads.json` (ignorado por git, contiene PII).
-- **Airtable:** crea una tabla con los campos: Fecha, Estado, UTM, Nombre dueño, Negocio, Ciudad, País, WhatsApp, Email, Tipo de negocio, Respuestas, Puntuación, Fuga principal, Fugas secundarias, Oferta recomendada.
-
-> Nota para producción serverless (Vercel): el sistema de archivos es efímero, así que en producción configura Airtable (u otro destino) en lugar del archivo local.
+- **Supabase (producción):** tabla `leads` con RLS activado y política de solo-inserción. Los leads se ven en el Table Editor del dashboard de Supabase.
+- **Airtable (alternativa):** crea una tabla con los campos: Fecha, Estado, UTM, Nombre dueño, Negocio, Ciudad, País, WhatsApp, Email, Tipo de negocio, Respuestas, Puntuación, Fuga principal, Fugas secundarias, Oferta recomendada.
+- **Sin configurar:** archivo `data/leads.json` (ignorado por git, contiene PII; solo sirve en local — en Vercel el sistema de archivos es efímero).
 
 ## Análisis con IA
 

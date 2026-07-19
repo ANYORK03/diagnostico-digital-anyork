@@ -57,6 +57,43 @@ function buildRecord(params: {
   };
 }
 
+async function saveToSupabase(record: LeadRecord): Promise<void> {
+  const url = process.env.SUPABASE_URL;
+  const key = process.env.SUPABASE_KEY;
+  if (!url || !key) return;
+
+  const res = await fetch(`${url}/rest/v1/leads`, {
+    method: "POST",
+    headers: {
+      apikey: key,
+      Authorization: `Bearer ${key}`,
+      "Content-Type": "application/json",
+      Prefer: "return=minimal",
+    },
+    body: JSON.stringify({
+      created_at: record.createdAt,
+      estado: record.status,
+      utm: record.utm,
+      nombre_dueno: record.owner_name,
+      negocio: record.business_name,
+      ciudad: record.city,
+      pais: record.country,
+      whatsapp: record.whatsapp,
+      email: record.email,
+      tipo_negocio: record.business_type,
+      respuestas: record.answers,
+      puntuacion: record.score,
+      fuga_principal: record.main_leak,
+      fugas_secundarias: record.secondary_leaks.join(", "),
+      oferta_recomendada: record.recommended_offer,
+    }),
+  });
+
+  if (!res.ok) {
+    throw new Error(`Supabase respondió ${res.status}`);
+  }
+}
+
 async function saveToAirtable(record: LeadRecord): Promise<void> {
   const apiKey = process.env.AIRTABLE_API_KEY;
   const baseId = process.env.AIRTABLE_BASE_ID;
@@ -129,13 +166,16 @@ export async function saveLead(params: {
   const record = buildRecord(params);
 
   try {
+    const useSupabase = Boolean(process.env.SUPABASE_URL && process.env.SUPABASE_KEY);
     const useAirtable = Boolean(
       process.env.AIRTABLE_API_KEY &&
         process.env.AIRTABLE_BASE_ID &&
         process.env.AIRTABLE_TABLE_NAME,
     );
 
-    if (useAirtable) {
+    if (useSupabase) {
+      await saveToSupabase(record);
+    } else if (useAirtable) {
       await saveToAirtable(record);
     } else {
       await saveToLocalFile(record);
