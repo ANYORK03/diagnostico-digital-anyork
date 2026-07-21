@@ -59,8 +59,10 @@ function buildRecord(params: {
 // protegida por la política RLS "insert_leads_anon" (solo permite INSERT,
 // nunca lectura). Se deja como valor por defecto para que la landing guarde
 // leads sin depender de configurar variables de entorno en Vercel.
-const DEFAULT_SUPABASE_URL = "https://bkioiprsgiazfiqsamwn.supabase.co";
-const DEFAULT_SUPABASE_KEY = "sb_publishable_tVpRm1WBEAv4rzbOrjPl6Q_bLuS0Q8z";
+// Proyecto: "diagnostico-digital-anyork" (yapricvyehoacrwfhkrc), el mismo
+// que aparece en el dashboard de Vercel bajo "Conectar" para este proyecto.
+const DEFAULT_SUPABASE_URL = "https://yapricvyehoacrwfhkrc.supabase.co";
+const DEFAULT_SUPABASE_KEY = "sb_publishable_PfVZYPe75up6Yms1JJS6AA_Pl5dExpR";
 
 async function saveToSupabase(record: LeadRecord): Promise<void> {
   const url = process.env.SUPABASE_URL || DEFAULT_SUPABASE_URL;
