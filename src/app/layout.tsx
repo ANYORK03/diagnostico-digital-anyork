@@ -11,7 +11,7 @@ const inter = Inter({
   display: "swap",
 });
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://digitalanyork.com";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://primerempleadoia.com";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     siteName: "Digital Anyork LLC",
     locale: "es_US",
     type: "website",
-    images: [{ url: "/og-image.png", width: 1200, height: 630 }],
+    images: [{ url: "/og-image.png", width: 1730, height: 909 }],
   },
   twitter: {
     card: "summary_large_image",
