@@ -9,7 +9,7 @@ npm install
 npm run dev
 ```
 
-Abre http://localhost:3000. Funciona sin configurar nada: sin claves de IA usa el motor de puntuación local y guarda los leads en `data/leads.json`.
+Abre http://localhost:3000. Funciona sin configurar nada: sin claves de IA usa el motor de puntuación local, y los leads se guardan automáticamente en el Supabase de Digital Anyork.
 
 ## Configuración (`.env.local`)
 
@@ -20,17 +20,16 @@ Copia `.env.example` como `.env.local` y ajusta:
 | `NEXT_PUBLIC_FREE_CASES_OPEN` | `true` muestra la convocatoria de 3 casos gratis; `false` la reemplaza por la oferta de revisión personalizada. No requiere rediseño, solo redeploy. |
 | `AI_PROVIDER` | `openai`, `anthropic`, `gemini` o `groq`. Vacío = solo motor local. |
 | `*_API_KEY` | La clave del proveedor elegido. Solo vive en el servidor, nunca llega al navegador. |
-| `SUPABASE_URL` + `SUPABASE_KEY` | Destino principal de leads (tabla `leads`). Recomendado en producción. |
-| `AIRTABLE_API_KEY/BASE_ID/TABLE_NAME` | Alternativa a Supabase. Sin ninguno, los leads van a `data/leads.json` (solo local). |
+| `SUPABASE_URL` + `SUPABASE_KEY` | Ya tienen un valor por defecto (el Supabase de Digital Anyork). Solo llénalas si quieres apuntar a OTRO proyecto Supabase. |
+| `AIRTABLE_API_KEY/BASE_ID/TABLE_NAME` | Si se configuran las 3, tienen prioridad sobre Supabase. |
 | `NEXT_PUBLIC_SITE_URL` | URL pública para SEO y Open Graph. |
 
 ## Base de leads
 
 Cada lead se registra **antes** de mostrar el resultado, con: fecha, UTMs, respuestas, puntuación, fuga principal, fugas secundarias, oferta recomendada y estado `Nuevo diagnóstico`.
 
-- **Supabase (producción):** tabla `leads` con RLS activado y política de solo-inserción. Los leads se ven en el Table Editor del dashboard de Supabase.
-- **Airtable (alternativa):** crea una tabla con los campos: Fecha, Estado, UTM, Nombre dueño, Negocio, Ciudad, País, WhatsApp, Email, Tipo de negocio, Respuestas, Puntuación, Fuga principal, Fugas secundarias, Oferta recomendada.
-- **Sin configurar:** archivo `data/leads.json` (ignorado por git, contiene PII; solo sirve en local — en Vercel el sistema de archivos es efímero).
+- **Supabase (activo por defecto):** tabla `leads` con RLS activado y política de solo-inserción — la clave usada es la "publishable" (equivalente a la `anon` key), diseñada para vivir en el cliente; nadie puede leer ni modificar leads con ella, solo insertar. Los leads se ven en Supabase → tu proyecto → **Table Editor** → tabla **leads**.
+- **Airtable (alternativa):** si configuras `AIRTABLE_API_KEY/BASE_ID/TABLE_NAME`, toma prioridad sobre Supabase. Crea una tabla con los campos: Fecha, Estado, UTM, Nombre dueño, Negocio, Ciudad, País, WhatsApp, Email, Tipo de negocio, Respuestas, Puntuación, Fuga principal, Fugas secundarias, Oferta recomendada.
 
 ## Análisis con IA
 

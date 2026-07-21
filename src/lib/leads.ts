@@ -1,5 +1,3 @@
-import { mkdir, readFile, writeFile } from "fs/promises";
-import path from "path";
 import { QUESTIONS } from "./questions";
 import type { Answer, DiagnosticResult, LeadInfo } from "./types";
 
@@ -57,9 +55,16 @@ function buildRecord(params: {
   };
 }
 
+// Clave "publishable" de Supabase: diseñada para exponerse en el cliente,
+// protegida por la política RLS "insert_leads_anon" (solo permite INSERT,
+// nunca lectura). Se deja como valor por defecto para que la landing guarde
+// leads sin depender de configurar variables de entorno en Vercel.
+const DEFAULT_SUPABASE_URL = "https://bkioiprsgiazfiqsamwn.supabase.co";
+const DEFAULT_SUPABASE_KEY = "sb_publishable_tVpRm1WBEAv4rzbOrjPl6Q_bLuS0Q8z";
+
 async function saveToSupabase(record: LeadRecord): Promise<void> {
-  const url = process.env.SUPABASE_URL;
-  const key = process.env.SUPABASE_KEY;
+  const url = process.env.SUPABASE_URL || DEFAULT_SUPABASE_URL;
+  const key = process.env.SUPABASE_KEY || DEFAULT_SUPABASE_KEY;
   if (!url || !key) return;
 
   const res = await fetch(`${url}/rest/v1/leads`, {
@@ -135,23 +140,6 @@ async function saveToAirtable(record: LeadRecord): Promise<void> {
   }
 }
 
-const LOCAL_LEADS_PATH = path.join(process.cwd(), "data", "leads.json");
-
-async function saveToLocalFile(record: LeadRecord): Promise<void> {
-  await mkdir(path.dirname(LOCAL_LEADS_PATH), { recursive: true });
-
-  let existing: LeadRecord[] = [];
-  try {
-    const raw = await readFile(LOCAL_LEADS_PATH, "utf-8");
-    existing = JSON.parse(raw);
-  } catch {
-    existing = [];
-  }
-
-  existing.push(record);
-  await writeFile(LOCAL_LEADS_PATH, JSON.stringify(existing, null, 2), "utf-8");
-}
-
 /**
  * El registro nunca debe bloquear ni fallar la respuesta al visitante: si el
  * almacenamiento falla, se registra el error en consola pero el diagnóstico
@@ -166,19 +154,18 @@ export async function saveLead(params: {
   const record = buildRecord(params);
 
   try {
-    const useSupabase = Boolean(process.env.SUPABASE_URL && process.env.SUPABASE_KEY);
+    // Airtable, si se configura explícitamente, tiene prioridad sobre el
+    // Supabase por defecto.
     const useAirtable = Boolean(
       process.env.AIRTABLE_API_KEY &&
         process.env.AIRTABLE_BASE_ID &&
         process.env.AIRTABLE_TABLE_NAME,
     );
 
-    if (useSupabase) {
-      await saveToSupabase(record);
-    } else if (useAirtable) {
+    if (useAirtable) {
       await saveToAirtable(record);
     } else {
-      await saveToLocalFile(record);
+      await saveToSupabase(record);
     }
   } catch (error) {
     console.error("[leads] No se pudo guardar el lead:", error);
