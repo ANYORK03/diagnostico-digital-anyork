@@ -95,51 +95,15 @@ export function ResultScreen({
         {result.executive_reading}
       </motion.p>
 
-      <motion.div variants={itemVariants} className="grid gap-5 sm:grid-cols-2">
-        <div>
-          <h4 className="mb-2 text-xs font-semibold tracking-wide text-da-gray">
-            EVIDENCIA EN TUS RESPUESTAS
-          </h4>
-          <ul className="flex flex-col gap-2 text-sm text-da-white/85">
-            {result.evidence.map((e, i) => (
-              <li key={i} className="flex gap-2">
-                <span aria-hidden className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-da-green" />
-                {e}
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div>
-          <h4 className="mb-2 text-xs font-semibold tracking-wide text-da-gray">HIPÓTESIS</h4>
-          <ul className="flex flex-col gap-2 text-sm italic text-da-gray">
-            {result.hypotheses.map((h, i) => (
-              <li key={i}>{h}</li>
-            ))}
-          </ul>
-        </div>
-      </motion.div>
+      <motion.div
+        variants={itemVariants}
+        className="rounded-2xl border border-da-green/30 bg-da-green-dim p-5"
+      >
+        <h4 className="text-xs font-semibold tracking-wide text-da-green">QUÉ HACER AHORA</h4>
+        <p className="mt-2 text-base font-semibold text-da-white">{result.recommended_offer}</p>
+        <p className="mt-1 text-sm leading-relaxed text-da-white/80">{result.why_this_offer}</p>
 
-      <motion.div variants={itemVariants}>
-        <h4 className="mb-2 text-xs font-semibold tracking-wide text-da-gray">
-          FUGAS SECUNDARIAS
-        </h4>
-        <div className="flex flex-wrap gap-2">
-          {result.secondary_leaks.map((leak) => (
-            <span
-              key={leak}
-              className="rounded-full border border-da-panel-border px-3 py-1 text-xs text-da-gray"
-            >
-              {leak}
-            </span>
-          ))}
-        </div>
-      </motion.div>
-
-      <motion.div variants={itemVariants}>
-        <h4 className="mb-3 text-xs font-semibold tracking-wide text-da-gray">
-          TUS PRIMERAS ACCIONES
-        </h4>
-        <ol className="flex flex-col gap-3">
+        <ol className="mt-4 flex flex-col gap-3 border-t border-da-green/20 pt-4">
           {result.first_actions.map((action, i) => (
             <li key={i} className="flex gap-3 text-sm text-da-white/90">
               <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-da-green/40 text-[11px] font-semibold text-da-green">
@@ -151,15 +115,29 @@ export function ResultScreen({
         </ol>
       </motion.div>
 
-      <motion.div
-        variants={itemVariants}
-        className="rounded-2xl border border-da-green/30 bg-da-green-dim p-5"
-      >
-        <h4 className="text-xs font-semibold tracking-wide text-da-green">
-          SOLUCIÓN RECOMENDADA
+      <motion.div variants={itemVariants}>
+        <h4 className="mb-2 text-xs font-semibold tracking-wide text-da-gray">
+          CÓMO LO VIMOS EN TUS RESPUESTAS
         </h4>
-        <p className="mt-2 text-base font-semibold text-da-white">{result.recommended_offer}</p>
-        <p className="mt-1 text-sm leading-relaxed text-da-white/80">{result.why_this_offer}</p>
+        <ul className="flex flex-col gap-2 text-sm text-da-white/80">
+          {result.evidence.map((e, i) => (
+            <li key={`e-${i}`} className="flex gap-2">
+              <span aria-hidden className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-da-green" />
+              {e}
+            </li>
+          ))}
+          {result.hypotheses.map((h, i) => (
+            <li key={`h-${i}`} className="flex gap-2 italic text-da-gray">
+              <span aria-hidden className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-da-gray-dim" />
+              {h}
+            </li>
+          ))}
+        </ul>
+        {result.secondary_leaks.length > 0 && (
+          <p className="mt-3 text-xs leading-relaxed text-da-gray-dim">
+            Más adelante también vale la pena revisar: {result.secondary_leaks.join(" y ")}.
+          </p>
+        )}
       </motion.div>
 
       <motion.p variants={itemVariants} className="text-xs leading-relaxed text-da-gray-dim">
