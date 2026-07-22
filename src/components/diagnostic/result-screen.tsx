@@ -51,6 +51,8 @@ export function ResultScreen({
     city: lead.city,
     score: result.score,
     mainLeakLabel: result.main_leak_label,
+    executiveReading: result.executive_reading,
+    firstAction: result.first_actions[0] ?? "",
     recommendedOffer: result.recommended_offer,
   };
 
@@ -172,11 +174,11 @@ export function ResultScreen({
           <>
             <div>
               <p className="text-base font-semibold text-da-white">
-                ¿Quieres que trabajemos en esta fuga contigo?
+                ¿Quieres que resolvamos esto juntos?
               </p>
               <p className="mt-1 text-sm leading-relaxed text-da-gray">
-                Seleccionaremos 3 negocios para implementar gratuitamente su
-                primera mejora y documentar el proceso.
+                Escríbenos por WhatsApp y cuéntanos tu caso. Elegiremos 3
+                negocios para ayudarles gratis a corregir su primera fuga.
               </p>
             </div>
             <a
@@ -186,15 +188,23 @@ export function ResultScreen({
               onClick={() => handleWhatsAppClick("postular")}
               className="flex min-h-[52px] items-center justify-center rounded-full bg-da-green px-6 text-sm font-semibold tracking-wide text-[#04120a] transition-transform hover:scale-[1.01]"
             >
-              POSTULAR MI NEGOCIO →
+              ESCRÍBENOS POR WHATSAPP →
             </a>
+            <span className="text-center text-xs text-da-gray-dim">
+              Sin formularios ni esperas: hablas directo con nosotros.
+            </span>
           </>
         ) : (
           <>
-            <p className="text-base font-semibold text-da-white">
-              ¿Quieres ayuda para corregir esta fuga? Solicita una revisión
-              personalizada.
-            </p>
+            <div>
+              <p className="text-base font-semibold text-da-white">
+                ¿Quieres ayuda para corregir esta fuga?
+              </p>
+              <p className="mt-1 text-sm leading-relaxed text-da-gray">
+                Escríbenos por WhatsApp y te explicamos cómo ayudarte, sin
+                compromiso.
+              </p>
+            </div>
             <a
               href={buildWhatsAppLink({ ...whatsappBase, intent: "recibir ayuda con mi resultado" })}
               target="_blank"
@@ -202,7 +212,7 @@ export function ResultScreen({
               onClick={() => handleWhatsAppClick("ayuda")}
               className="flex min-h-[52px] items-center justify-center rounded-full bg-da-green px-6 text-sm font-semibold tracking-wide text-[#04120a] transition-transform hover:scale-[1.01]"
             >
-              QUIERO AYUDA CON MI RESULTADO →
+              ESCRÍBENOS POR WHATSAPP →
             </a>
           </>
         )}

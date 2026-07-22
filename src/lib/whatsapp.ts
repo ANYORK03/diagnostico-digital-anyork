@@ -6,6 +6,8 @@ export function buildWhatsAppLink(params: {
   city: string;
   score: number;
   mainLeakLabel: string;
+  executiveReading: string;
+  firstAction: string;
   recommendedOffer: string;
   intent: "postular mi negocio" | "recibir ayuda con mi resultado";
 }): string {
@@ -15,8 +17,12 @@ export function buildWhatsAppLink(params: {
     `Nombre: ${params.ownerName}`,
     `Negocio: ${params.businessName}`,
     `Ciudad: ${params.city}`,
+    "",
     `Puntuación: ${params.score}/100`,
     `Fuga principal: ${params.mainLeakLabel}`,
+    `Diagnóstico: ${params.executiveReading}`,
+    "",
+    `Primer paso sugerido: ${params.firstAction}`,
     `Solución recomendada: ${params.recommendedOffer}`,
     "",
     `Quiero ${params.intent}.`,
