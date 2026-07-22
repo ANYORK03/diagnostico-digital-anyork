@@ -188,7 +188,7 @@ export function ResultScreen({
               onClick={() => handleWhatsAppClick("postular")}
               className="flex min-h-[52px] items-center justify-center rounded-full bg-da-green px-6 text-sm font-semibold tracking-wide text-[#04120a] transition-transform hover:scale-[1.01]"
             >
-              ESCRÍBENOS POR WHATSAPP →
+              RECIBE LAS MEJORAS PARA TU NEGOCIO →
             </a>
             <span className="text-center text-xs text-da-gray-dim">
               Sin formularios ni esperas: hablas directo con nosotros.
@@ -212,7 +212,7 @@ export function ResultScreen({
               onClick={() => handleWhatsAppClick("ayuda")}
               className="flex min-h-[52px] items-center justify-center rounded-full bg-da-green px-6 text-sm font-semibold tracking-wide text-[#04120a] transition-transform hover:scale-[1.01]"
             >
-              ESCRÍBENOS POR WHATSAPP →
+              RECIBE LAS MEJORAS PARA TU NEGOCIO →
             </a>
           </>
         )}
